@@ -1,0 +1,13 @@
+### Send POST request with json body
+POST {{endtpoint}}/aluno
+Content-Type: application/json
+
+{
+  "name": "teste2",
+  "email": "jersonlbrito@hotmail.com"
+}
+
+### Get Aluno
+GET  {{endtpoint}}/aluno/3
+Content-Type: application/json
+
