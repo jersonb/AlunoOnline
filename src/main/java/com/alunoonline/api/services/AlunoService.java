@@ -4,6 +4,7 @@ import com.alunoonline.api.models.Aluno;
 import com.alunoonline.api.repositories.AlunoRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -15,11 +16,15 @@ public class AlunoService {
         this.alunoRepository = alunoRepository;
     }
 
-    public  void crete (Aluno aluno){
+    public void crete(Aluno aluno) {
         alunoRepository.save(aluno);
     }
 
     public Optional<Aluno> get(Long alunoId) {
         return alunoRepository.findById(alunoId);
+    }
+
+    public List<Aluno> get() {
+        return alunoRepository.findAll();
     }
 }

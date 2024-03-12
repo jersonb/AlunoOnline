@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -30,6 +31,13 @@ public class AlunoController {
                 .buildAndExpand(aluno.getId()).toUri();
 
         return ResponseEntity.created(location).build();
+    }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<Aluno>> get(){
+        var alunos = alunoService.get();
+        return ResponseEntity.ok(alunos);
     }
 
     @GetMapping("/{alunoId}")

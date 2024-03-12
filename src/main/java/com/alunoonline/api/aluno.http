@@ -7,6 +7,11 @@ Content-Type: application/json
   "email": "jersonlbrito@hotmail.com"
 }
 
+### Get all Alunos
+GET  {{endtpoint}}/aluno
+Content-Type: application/json
+
+
 ### Get Aluno
 GET  {{endtpoint}}/aluno/3
 Content-Type: application/json
