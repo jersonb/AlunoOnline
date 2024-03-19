@@ -10,26 +10,26 @@ import java.util.Optional;
 @Service
 public class AlunoService {
 
-    final AlunoRepository alunoRepository;
+    final AlunoRepository repository;
 
     public AlunoService(AlunoRepository alunoRepository) {
-        this.alunoRepository = alunoRepository;
+        this.repository = alunoRepository;
     }
 
     public void crete(Aluno aluno) {
-        alunoRepository.save(aluno);
+        repository.save(aluno);
     }
 
     public Optional<Aluno> get(Long alunoId) {
-        return alunoRepository.findById(alunoId);
+        return repository.findById(alunoId);
     }
 
     public List<Aluno> get() {
-        return alunoRepository.findAll();
+        return repository.findAll();
     }
 
     public void delete(Long alunoId) {
         var aluno = get(alunoId);
-        aluno.ifPresent(alunoRepository::delete);
+        aluno.ifPresent(repository::delete);
     }
 }
