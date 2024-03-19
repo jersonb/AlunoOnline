@@ -27,4 +27,9 @@ public class AlunoService {
     public List<Aluno> get() {
         return alunoRepository.findAll();
     }
+
+    public void delete(Long alunoId) {
+        var aluno = get(alunoId);
+        aluno.ifPresent(alunoRepository::delete);
+    }
 }

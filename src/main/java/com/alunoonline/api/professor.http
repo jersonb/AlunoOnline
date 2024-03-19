@@ -1,0 +1,8 @@
+### Send POST request with json body
+POST {{endtpoint}}/professor
+Content-Type: application/json
+
+{
+  "name": "teste2",
+  "email": "jersonlbrito@hotmail.com"
+}

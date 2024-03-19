@@ -21,7 +21,7 @@ public class AlunoController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Object> create(@RequestBody Aluno aluno){
+    public ResponseEntity<Object> create(@RequestBody Aluno aluno) {
 
         alunoService.crete(aluno);
 
@@ -33,17 +33,44 @@ public class AlunoController {
         return ResponseEntity.created(location).build();
     }
 
-    @GetMapping
+    @PutMapping("/{aluniId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public ResponseEntity<Void> update(@PathVariable Long aluniId, @RequestBody Aluno aluno) {
+
+        var alunoFomDb = alunoService.get(aluniId);
+
+        if (alunoFomDb.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        
+        var alunoExisits = alunoFomDb.get();
+
+        alunoExisits.setEmail(aluno.getEmail());
+        alunoExisits.setName(aluno.getName());
+
+
+        return ResponseEntity.noContent().build();
+    }
+
+
+    @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<Aluno>> get(){
+    public ResponseEntity<List<Aluno>> get() {
         var alunos = alunoService.get();
         return ResponseEntity.ok(alunos);
     }
 
     @GetMapping("/{alunoId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Optional<Aluno>> get(@PathVariable Long alunoId){
-       var aluno = alunoService.get(alunoId);
-       return ResponseEntity.ok(aluno);
+    public ResponseEntity<Optional<Aluno>> get(@PathVariable Long alunoId) {
+        var aluno = alunoService.get(alunoId);
+        return ResponseEntity.ok(aluno);
+    }
+
+    @DeleteMapping("/{alunoId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public ResponseEntity<Void> delete(@PathVariable Long alunoId) {
+       alunoService.delete(alunoId);
+        return ResponseEntity.noContent().build();
     }
 }

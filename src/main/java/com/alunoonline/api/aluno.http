@@ -8,7 +8,7 @@ Content-Type: application/json
 }
 
 ### Get all Alunos
-GET  {{endtpoint}}/aluno
+GET  {{endtpoint}}/aluno/all
 Content-Type: application/json
 
 
