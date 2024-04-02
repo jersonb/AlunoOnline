@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+
+  postgresql:
+    image: postgres
+    container_name: aluno-online-postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: alunoonline
+      POSTGRES_USER: alunoonline
+      POSTGRES_DB: alunoonline
+    volumes:
+      - alunoonline:/var/lib/postgresql/data
+    ports:
+      - 5433:5432
+
+volumes:
+  alunoonline:
