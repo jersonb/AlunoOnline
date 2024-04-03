@@ -12,8 +12,8 @@ public class AlunoService {
 
     final AlunoRepository repository;
 
-    public AlunoService(AlunoRepository alunoRepository) {
-        this.repository = alunoRepository;
+    public AlunoService(AlunoRepository repository) {
+        this.repository = repository;
     }
 
     public void crete(Aluno aluno) {
@@ -31,5 +31,12 @@ public class AlunoService {
     public void delete(Long alunoId) {
         var aluno = get(alunoId);
         aluno.ifPresent(repository::delete);
+    }
+
+    public void update(Aluno alunoOld,Aluno aluno){
+        alunoOld.setName(aluno.getName());
+        alunoOld.setEmail(aluno.getEmail());
+
+        repository.save(alunoOld);
     }
 }
