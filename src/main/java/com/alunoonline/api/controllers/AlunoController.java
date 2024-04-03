@@ -2,6 +2,10 @@ package com.alunoonline.api.controllers;
 
 import com.alunoonline.api.models.Aluno;
 import com.alunoonline.api.services.AlunoService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +16,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/aluno")
+@Tag(name = "Aluno", description = "Gerencie os alunos")
 public class AlunoController {
     final AlunoService service;
 
@@ -19,9 +24,14 @@ public class AlunoController {
         this.service = alunoService;
     }
 
+    @Operation(summary = "Adiciona novo aluno", method = "POST")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Aluno adicionado"),
+            @ApiResponse(responseCode = "500", description = "Erro inesperado"),
+    })
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Object> create(@RequestBody Aluno aluno) {
+    public ResponseEntity<Void> create(@RequestBody Aluno aluno) {
 
         service.crete(aluno);
 
@@ -33,6 +43,12 @@ public class AlunoController {
         return ResponseEntity.created(location).build();
     }
 
+    @Operation(summary = "Edita um aluno", method = "PUT")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Aluno ajustado"),
+            @ApiResponse(responseCode = "404", description = "Aluno não encontrado"),
+            @ApiResponse(responseCode = "500", description = "Erro inesperado"),
+    })
     @PutMapping("/{aluniId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> update(@PathVariable Long aluniId, @RequestBody Aluno aluno) {
@@ -42,7 +58,7 @@ public class AlunoController {
         if (alunoFomDb.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        
+
         var alunoExisits = alunoFomDb.get();
 
         alunoExisits.setEmail(aluno.getEmail());
@@ -52,7 +68,11 @@ public class AlunoController {
         return ResponseEntity.noContent().build();
     }
 
-
+    @Operation(summary = "Lista alunos", method = "GET")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista de alunos"),
+            @ApiResponse(responseCode = "500", description = "Erro inesperado"),
+    })
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<Aluno>> get() {
@@ -60,17 +80,31 @@ public class AlunoController {
         return ResponseEntity.ok(alunos);
     }
 
+    @Operation(summary = "Busca um aluno por id", method = "GET")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "500", description = "Erro inesperado"),
+            @ApiResponse(responseCode = "404", description = "Aluno não encontrado"),
+            @ApiResponse(responseCode = "200", description = "Aluno encontrado"),
+    })
     @GetMapping("/{alunoId}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Optional<Aluno>> get(@PathVariable Long alunoId) {
         var aluno = service.get(alunoId);
+        if (aluno.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
         return ResponseEntity.ok(aluno);
     }
-
+    @Operation(summary = "Busca um aluno por id", method = "DELETE")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Aluno deletado"),
+            @ApiResponse(responseCode = "500", description = "Erro inesperado"),
+            @ApiResponse(responseCode = "404", description = "Aluno não encontrado"),
+    })
     @DeleteMapping("/{alunoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> delete(@PathVariable Long alunoId) {
-       service.delete(alunoId);
+        service.delete(alunoId);
         return ResponseEntity.noContent().build();
     }
 }
