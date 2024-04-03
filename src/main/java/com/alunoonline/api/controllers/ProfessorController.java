@@ -57,12 +57,7 @@ public class ProfessorController {
         if (professorFormDb.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-
-        var professorExisits = professorFormDb.get();
-
-        professorExisits.setEmail(professor.getEmail());
-        professorExisits.setName(professor.getName());
-
+        service.update(professorFormDb.get(), professor);
 
         return ResponseEntity.noContent().build();
     }

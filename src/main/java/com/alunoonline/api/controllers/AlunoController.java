@@ -58,12 +58,7 @@ public class AlunoController {
         if (alunoFomDb.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-
-        var alunoExisits = alunoFomDb.get();
-
-        alunoExisits.setEmail(aluno.getEmail());
-        alunoExisits.setName(aluno.getName());
-
+        service.update(alunoFomDb.get(), aluno);
 
         return ResponseEntity.noContent().build();
     }

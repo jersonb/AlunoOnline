@@ -11,11 +11,12 @@ import java.util.Optional;
 public class ProfessorService {
     final ProfessorRepository repository;
 
-    public ProfessorService(ProfessorRepository professorReoiaitory) {
-        this.repository = professorReoiaitory;
+    public ProfessorService(ProfessorRepository repository) {
+        this.repository = repository;
     }
 
     public void crete(Professor professor) {
+        repository.save(professor);
     }
 
     public Optional<Professor> get(Long professorId) {
@@ -29,5 +30,11 @@ public class ProfessorService {
     public void delete(Long professorId) {
         var professor = get(professorId);
         professor.ifPresent(repository::delete);
+    }
+
+    public  void update(Professor professorOld, Professor professor){
+        professorOld.setName(professor.getName());
+        professorOld.setEmail(professor.getEmail());
+        repository.save(professorOld);
     }
 }
