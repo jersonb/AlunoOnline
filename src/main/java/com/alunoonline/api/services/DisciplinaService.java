@@ -33,7 +33,7 @@ public class DisciplinaService {
     }
 
     public void update(Disciplina disciplinaOld, Disciplina disciplina) {
-        disciplinaOld.setName(disciplina.getName());
+        disciplinaOld.setNome(disciplina.getNome());
         repository.save(disciplinaOld);
     }
 

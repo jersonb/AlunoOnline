@@ -2,10 +2,12 @@ package com.alunoonline.api.controllers;
 
 import com.alunoonline.api.models.Aluno;
 import com.alunoonline.api.services.AlunoService;
+import com.alunoonline.api.viewobjects.requests.AlunoDtoRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,8 +33,9 @@ public class AlunoController {
     })
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Void> create(@RequestBody Aluno aluno) {
+    public ResponseEntity<Void> create(@Valid @RequestBody AlunoDtoRequest request) {
 
+        var aluno = request.toAluno();
         service.create(aluno);
 
         var location = ServletUriComponentsBuilder
@@ -51,7 +54,9 @@ public class AlunoController {
     })
     @PutMapping("/{alunoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> update(@PathVariable Long alunoId, @RequestBody Aluno aluno) {
+    public ResponseEntity<Void> update(@PathVariable Long alunoId, @RequestBody AlunoDtoRequest request) {
+
+        var aluno = request.toAluno(alunoId);
 
         var alunoFomDb = service.get(alunoId);
 

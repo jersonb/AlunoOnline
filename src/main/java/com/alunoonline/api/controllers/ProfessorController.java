@@ -2,6 +2,7 @@ package com.alunoonline.api.controllers;
 
 import com.alunoonline.api.models.Professor;
 import com.alunoonline.api.services.ProfessorService;
+import com.alunoonline.api.viewobjects.requests.ProfessorDtoRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -31,8 +32,9 @@ public class ProfessorController {
     })
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Object> create(@RequestBody Professor professor) {
+    public ResponseEntity<Object> create(@RequestBody ProfessorDtoRequest request) {
 
+        var professor = request.toProfessor();
         service.create(professor);
 
         var location = ServletUriComponentsBuilder
@@ -51,8 +53,9 @@ public class ProfessorController {
     })
     @PutMapping("/{professorId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> update(@PathVariable Long professorId, @RequestBody Professor professor) {
+    public ResponseEntity<Void> update(@PathVariable Long professorId, @RequestBody ProfessorDtoRequest request) {
 
+        var professor = request.toProfessor(professorId);
         var professorFormDb = service.get(professorId);
 
         if (professorFormDb.isEmpty()) {
@@ -71,8 +74,8 @@ public class ProfessorController {
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<Professor>> get() {
-        var alunos = service.get();
-        return ResponseEntity.ok(alunos);
+        var professores = service.get();
+        return ResponseEntity.ok(professores);
     }
 
     @Operation(summary = "Busca um professor por id", method = "GET")
@@ -88,9 +91,9 @@ public class ProfessorController {
         return ResponseEntity.ok(professor);
     }
 
-    @Operation(summary = "Edita um professor", method = "PUT")
+    @Operation(summary = "Apaga um professor", method = "DELETE")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Professor ajustado"),
+            @ApiResponse(responseCode = "201", description = "Professor apagado"),
             @ApiResponse(responseCode = "404", description = "Professor não encontrado"),
             @ApiResponse(responseCode = "500", description = "Erro inesperado"),
     })

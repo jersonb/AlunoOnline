@@ -3,8 +3,8 @@ POST {{endtpoint}}/aluno
 Content-Type: application/json
 
 {
-  "name": "teste2",
-  "email": "jersonlbrito@hotmail.com"
+  "nome": "teste2",
+  "email": ""
 }
 
 ### Get all Alunos

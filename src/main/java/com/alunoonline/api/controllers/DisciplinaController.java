@@ -2,10 +2,12 @@ package com.alunoonline.api.controllers;
 
 import com.alunoonline.api.models.Disciplina;
 import com.alunoonline.api.services.DisciplinaService;
+import com.alunoonline.api.viewobjects.requests.DisciplinaDtoRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,8 +34,9 @@ public class DisciplinaController {
     })
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Object> create(@RequestBody Disciplina disciplina) {
+    public ResponseEntity<Object> create(@Valid @RequestBody DisciplinaDtoRequest request) {
 
+        var disciplina = request.toDisciplina();
         service.create(disciplina);
 
         var location = ServletUriComponentsBuilder
@@ -52,8 +55,9 @@ public class DisciplinaController {
     })
     @PutMapping("/{disciplinaId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> update(@PathVariable Long disciplinaId, @RequestBody Disciplina disciplina) {
+    public ResponseEntity<Void> update(@PathVariable Long disciplinaId, @RequestBody DisciplinaDtoRequest request) {
 
+        var disciplina = request.toDisciplina(disciplinaId);
         var disciplinaFormDb = service.get(disciplinaId);
 
         if (disciplinaFormDb.isEmpty()) {
@@ -72,8 +76,8 @@ public class DisciplinaController {
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<Disciplina>> get() {
-        var alunos = service.get();
-        return ResponseEntity.ok(alunos);
+        var disciplinas = service.get();
+        return ResponseEntity.ok(disciplinas);
     }
 
     @Operation(summary = "Busca uma disciplina por id", method = "GET")
@@ -89,7 +93,7 @@ public class DisciplinaController {
         return ResponseEntity.ok(disciplina);
     }
 
-    @Operation(summary = "Edita uma disciplina", method = "PUT")
+    @Operation(summary = "Edita uma disciplina", method = "DELETE")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Disciplina ajustado"),
             @ApiResponse(responseCode = "404", description = "Disciplina não encontrado"),

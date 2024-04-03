@@ -34,7 +34,7 @@ public class AlunoService {
     }
 
     public void update(Aluno alunoOld, Aluno aluno) {
-        alunoOld.setName(aluno.getName());
+        alunoOld.setNome(aluno.getNome());
         alunoOld.setEmail(aluno.getEmail());
 
         repository.save(alunoOld);

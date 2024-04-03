@@ -33,7 +33,7 @@ public class ProfessorService {
     }
 
     public  void update(Professor professorOld, Professor professor){
-        professorOld.setName(professor.getName());
+        professorOld.setNome(professor.getNome());
         professorOld.setEmail(professor.getEmail());
         repository.save(professorOld);
     }
