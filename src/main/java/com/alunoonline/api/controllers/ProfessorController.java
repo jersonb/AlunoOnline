@@ -23,6 +23,7 @@ public class ProfessorController {
     public ProfessorController(ProfessorService professorService) {
         this.service = professorService;
     }
+
     @Operation(summary = "Cria um professor", method = "POST")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Professor criado"),
@@ -44,7 +45,7 @@ public class ProfessorController {
 
     @Operation(summary = "Edita um professor", method = "PUT")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Professor ajustado"),
+            @ApiResponse(responseCode = "204", description = "Professor ajustado"),
             @ApiResponse(responseCode = "404", description = "Professor não encontrado"),
             @ApiResponse(responseCode = "500", description = "Erro inesperado"),
     })
@@ -62,10 +63,9 @@ public class ProfessorController {
         return ResponseEntity.noContent().build();
     }
 
-    @Operation(summary = "Edita um professor", method = "PUT")
+    @Operation(summary = "Lista professores", method = "GET")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Professor ajustado"),
-            @ApiResponse(responseCode = "404", description = "Professor não encontrado"),
+            @ApiResponse(responseCode = "200", description = "Lista dos professores"),
             @ApiResponse(responseCode = "500", description = "Erro inesperado"),
     })
     @GetMapping("/all")
@@ -75,9 +75,9 @@ public class ProfessorController {
         return ResponseEntity.ok(alunos);
     }
 
-    @Operation(summary = "Edita um professor", method = "PUT")
+    @Operation(summary = "Busca um professor por id", method = "GET")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Professor ajustado"),
+            @ApiResponse(responseCode = "200", description = "Professor encontrado"),
             @ApiResponse(responseCode = "404", description = "Professor não encontrado"),
             @ApiResponse(responseCode = "500", description = "Erro inesperado"),
     })

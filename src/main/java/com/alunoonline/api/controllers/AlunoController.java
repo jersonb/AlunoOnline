@@ -49,11 +49,11 @@ public class AlunoController {
             @ApiResponse(responseCode = "404", description = "Aluno não encontrado"),
             @ApiResponse(responseCode = "500", description = "Erro inesperado"),
     })
-    @PutMapping("/{aluniId}")
+    @PutMapping("/{alunoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> update(@PathVariable Long aluniId, @RequestBody Aluno aluno) {
+    public ResponseEntity<Void> update(@PathVariable Long alunoId, @RequestBody Aluno aluno) {
 
-        var alunoFomDb = service.get(aluniId);
+        var alunoFomDb = service.get(alunoId);
 
         if (alunoFomDb.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -90,7 +90,7 @@ public class AlunoController {
         }
         return ResponseEntity.ok(aluno);
     }
-    @Operation(summary = "Busca um aluno por id", method = "DELETE")
+    @Operation(summary = "Deleta um aluno por id", method = "DELETE")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Aluno deletado"),
             @ApiResponse(responseCode = "500", description = "Erro inesperado"),
