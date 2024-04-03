@@ -15,7 +15,7 @@ public class ProfessorService {
         this.repository = repository;
     }
 
-    public void crete(Professor professor) {
+    public void create(Professor professor) {
         repository.save(professor);
     }
 

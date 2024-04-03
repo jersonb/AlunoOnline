@@ -33,7 +33,7 @@ public class ProfessorController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Object> create(@RequestBody Professor professor) {
 
-        service.crete(professor);
+        service.create(professor);
 
         var location = ServletUriComponentsBuilder
                 .fromCurrentRequest()

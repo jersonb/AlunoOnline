@@ -16,7 +16,7 @@ public class AlunoService {
         this.repository = repository;
     }
 
-    public void crete(Aluno aluno) {
+    public void create(Aluno aluno) {
         repository.save(aluno);
     }
 
@@ -33,7 +33,7 @@ public class AlunoService {
         aluno.ifPresent(repository::delete);
     }
 
-    public void update(Aluno alunoOld,Aluno aluno){
+    public void update(Aluno alunoOld, Aluno aluno) {
         alunoOld.setName(aluno.getName());
         alunoOld.setEmail(aluno.getEmail());
 

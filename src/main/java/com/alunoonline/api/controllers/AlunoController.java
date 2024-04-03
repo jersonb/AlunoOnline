@@ -33,7 +33,7 @@ public class AlunoController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> create(@RequestBody Aluno aluno) {
 
-        service.crete(aluno);
+        service.create(aluno);
 
         var location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
