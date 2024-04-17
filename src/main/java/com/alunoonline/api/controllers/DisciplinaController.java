@@ -3,6 +3,7 @@ package com.alunoonline.api.controllers;
 import com.alunoonline.api.models.Disciplina;
 import com.alunoonline.api.services.DisciplinaService;
 import com.alunoonline.api.viewobjects.requests.DisciplinaDtoRequest;
+import com.alunoonline.api.viewobjects.responses.DisciplinaDtoResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -89,10 +90,17 @@ public class DisciplinaController {
     @GetMapping("/{disciplinaId}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Optional<Disciplina>> get(@PathVariable Long disciplinaId) {
+
         var disciplina = service.get(disciplinaId);
         return ResponseEntity.ok(disciplina);
     }
+    @GetMapping("/professor/{id}")
+    public  ResponseEntity<DisciplinaDtoResponse> getDisciplina(Long id){
 
+        var disciplinas = service.getDisciplinaByProfessor(id);
+        var disciplinaResponse = new DisciplinaDtoResponse(disciplinas);
+        return ResponseEntity.ok(disciplinaResponse);
+    }
     @Operation(summary = "Edita uma disciplina", method = "DELETE")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Disciplina ajustado"),

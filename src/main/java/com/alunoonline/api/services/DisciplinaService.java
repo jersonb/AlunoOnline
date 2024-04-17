@@ -37,4 +37,8 @@ public class DisciplinaService {
         repository.save(disciplinaOld);
     }
 
+    public  List<Disciplina> getDisciplinaByProfessor(Long professorId){
+        return  repository.findByProfessor(professorId);
+    }
+
 }

@@ -24,12 +24,8 @@ public class MatriculaAlunoController {
         this.service = service;
     }
 
-
     @Operation(summary = "Cria uma matrícula", method = "POST")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Matrícula criada"),
-            @ApiResponse(responseCode = "500", description = "Erro inesperado"),
-    })
+    @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Matrícula criada"), @ApiResponse(responseCode = "500", description = "Erro inesperado"),})
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Object> create(@Valid @RequestBody MatriculaAlunoDtoRequest request) {
@@ -37,20 +33,13 @@ public class MatriculaAlunoController {
         var matriculaAluno = request.toMatriculaAluno();
         service.create(matriculaAluno);
 
-        var location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(matriculaAluno.getId()).toUri();
+        var location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(matriculaAluno.getId()).toUri();
 
         return ResponseEntity.created(location).build();
     }
 
     @Operation(summary = "Edita uma matrícula", method = "PUT")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Matrícula ajustado"),
-            @ApiResponse(responseCode = "404", description = "Matrícula não encontrada"),
-            @ApiResponse(responseCode = "500", description = "Erro inesperado"),
-    })
+    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Matrícula ajustado"), @ApiResponse(responseCode = "404", description = "Matrícula não encontrada"), @ApiResponse(responseCode = "500", description = "Erro inesperado"),})
     @PutMapping("/{matriculaAlunoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> update(@PathVariable Long matriculaAlunoId, @RequestBody MatriculaAlunoDtoRequest request) {
@@ -66,12 +55,8 @@ public class MatriculaAlunoController {
         return ResponseEntity.noContent().build();
     }
 
-
     @Operation(summary = "Lista matrículas", method = "GET")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Lista de matrículas"),
-            @ApiResponse(responseCode = "500", description = "Erro inesperado"),
-    })
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Lista de matrículas"), @ApiResponse(responseCode = "500", description = "Erro inesperado"),})
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<MatriculaAluno>> get() {
@@ -80,23 +65,16 @@ public class MatriculaAlunoController {
     }
 
     @Operation(summary = "Busca uma matrícula por id", method = "GET")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Matrícula encontrada"),
-            @ApiResponse(responseCode = "404", description = "Matrícula não encontrada"),
-            @ApiResponse(responseCode = "500", description = "Erro inesperado"),
-    })
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Matrícula encontrada"), @ApiResponse(responseCode = "404", description = "Matrícula não encontrada"), @ApiResponse(responseCode = "500", description = "Erro inesperado"),})
     @GetMapping("/{matriculaAlunoId}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Optional<MatriculaAluno>> get(@PathVariable Long matriculaAlunoId) {
         var matriculaAluno = service.get(matriculaAlunoId);
         return ResponseEntity.ok(matriculaAluno);
     }
+
     @Operation(summary = "Apaga uma matrícula", method = "DELETE")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Matrícula deletada"),
-            @ApiResponse(responseCode = "404", description = "Matrícula não encontrada"),
-            @ApiResponse(responseCode = "500", description = "Erro inesperado"),
-    })
+    @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Matrícula deletada"), @ApiResponse(responseCode = "404", description = "Matrícula não encontrada"), @ApiResponse(responseCode = "500", description = "Erro inesperado"),})
     @DeleteMapping("/{matriculaAlunoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> delete(@PathVariable Long matriculaAlunoId) {
