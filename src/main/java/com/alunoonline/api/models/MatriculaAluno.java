@@ -27,7 +27,7 @@ public class MatriculaAluno implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "disciplina_id")
-    private Disciplina disciplina;
+    private Course disciplina;
 
     @Enumerated(EnumType.STRING)
     private MatriculaAlunoStatusEnum matriculaAlunoStatusEnum;

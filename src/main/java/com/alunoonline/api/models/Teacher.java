@@ -19,8 +19,7 @@ public class Teacher implements Serializable {
     private Long id;
     private String name;
     private String email;
-    @OneToMany(mappedBy = "professor")
-    private Collection<Disciplina> disciplina;
-
+    @OneToMany(mappedBy = "teacher")
+    private Collection<Course> disciplina;
 
 }
