@@ -1,9 +1,9 @@
 package com.alunoonline.api.repositories;
 
-import com.alunoonline.api.models.Professor;
+import com.alunoonline.api.models.Teacher;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProfessorRepository extends JpaRepository<Professor, Long> {
+public interface TeacherRepository extends JpaRepository<Teacher, Long> {
 }

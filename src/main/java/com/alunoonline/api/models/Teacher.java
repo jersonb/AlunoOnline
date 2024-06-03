@@ -12,12 +12,12 @@ import java.util.Collection;
 @NoArgsConstructor
 @Data
 @Entity
-public class Professor implements Serializable {
+public class Teacher implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String nome;
+    private String name;
     private String email;
     @OneToMany(mappedBy = "professor")
     private Collection<Disciplina> disciplina;

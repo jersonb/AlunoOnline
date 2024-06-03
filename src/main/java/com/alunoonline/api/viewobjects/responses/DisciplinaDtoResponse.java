@@ -10,7 +10,7 @@ public class DisciplinaDtoResponse {
 
     public DisciplinaDtoResponse(List<Disciplina> disciplinas) {
 
-        professor = disciplinas.get(0).getProfessor().getNome();
+        professor = disciplinas.get(0).getProfessor().getName();
 
         this.disciplinas = disciplinas
                 .stream()

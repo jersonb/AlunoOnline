@@ -1,8 +1,8 @@
 package com.alunoonline.api.controllers;
 
-import com.alunoonline.api.models.Professor;
-import com.alunoonline.api.services.ProfessorService;
-import com.alunoonline.api.viewobjects.requests.ProfessorDtoRequest;
+import com.alunoonline.api.models.Teacher;
+import com.alunoonline.api.services.TeacherService;
+import com.alunoonline.api.viewobjects.requests.TeacherDtoRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -16,13 +16,13 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/professor")
+@RequestMapping("/teachers")
 @Tag(name = "Professor", description = "Gerencie os professores")
-public class ProfessorController {
-    final ProfessorService service;
+public class TeacherController {
+    final TeacherService service;
 
-    public ProfessorController(ProfessorService professorService) {
-        this.service = professorService;
+    public TeacherController(TeacherService teacherService) {
+        this.service = teacherService;
     }
 
     @Operation(summary = "Cria um professor", method = "POST")
@@ -32,18 +32,19 @@ public class ProfessorController {
     })
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Object> create(@RequestBody ProfessorDtoRequest request) {
+    public ResponseEntity<Object> create(@RequestBody TeacherDtoRequest request) {
 
-        var professor = request.toProfessor();
-        service.create(professor);
+        var teacher = request.toEntity();
+        service.create(teacher);
 
         var location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(professor.getId()).toUri();
+                .buildAndExpand(teacher.getId()).toUri();
 
         return ResponseEntity.created(location).build();
     }
+
 
     @Operation(summary = "Edita um professor", method = "PUT")
     @ApiResponses(value = {
@@ -51,20 +52,21 @@ public class ProfessorController {
             @ApiResponse(responseCode = "404", description = "Professor não encontrado"),
             @ApiResponse(responseCode = "500", description = "Erro inesperado"),
     })
-    @PutMapping("/{professorId}")
+    @PutMapping("/{teacherId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> update(@PathVariable Long professorId, @RequestBody ProfessorDtoRequest request) {
+    public ResponseEntity<Void> update(@PathVariable Long teacherId, @RequestBody TeacherDtoRequest request) {
 
-        var professor = request.toProfessor(professorId);
-        var professorFormDb = service.get(professorId);
+        var requestEntity = request.toEntity(teacherId);
+        var teacherEntity = service.get(teacherId);
 
-        if (professorFormDb.isEmpty()) {
+        if (teacherEntity.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        service.update(professorFormDb.get(), professor);
+        service.update(teacherEntity.get(), requestEntity);
 
         return ResponseEntity.noContent().build();
     }
+
 
     @Operation(summary = "Lista professores", method = "GET")
     @ApiResponses(value = {
@@ -73,10 +75,11 @@ public class ProfessorController {
     })
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<Professor>> get() {
-        var professores = service.get();
-        return ResponseEntity.ok(professores);
+    public ResponseEntity<List<Teacher>> get() {
+        var teachers = service.get();
+        return ResponseEntity.ok(teachers);
     }
+
 
     @Operation(summary = "Busca um professor por id", method = "GET")
     @ApiResponses(value = {
@@ -84,12 +87,17 @@ public class ProfessorController {
             @ApiResponse(responseCode = "404", description = "Professor não encontrado"),
             @ApiResponse(responseCode = "500", description = "Erro inesperado"),
     })
-    @GetMapping("/{professorId}")
+    @GetMapping("/{teacherId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Optional<Professor>> get(@PathVariable Long professorId) {
-        var professor = service.get(professorId);
-        return ResponseEntity.ok(professor);
+    public ResponseEntity<Optional<Teacher>> get(@PathVariable Long teacherId) {
+        var teacher = service.get(teacherId);
+
+        if (teacher.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(teacher);
     }
+
 
     @Operation(summary = "Apaga um professor", method = "DELETE")
     @ApiResponses(value = {
@@ -97,10 +105,10 @@ public class ProfessorController {
             @ApiResponse(responseCode = "404", description = "Professor não encontrado"),
             @ApiResponse(responseCode = "500", description = "Erro inesperado"),
     })
-    @DeleteMapping("/{professorId}")
+    @DeleteMapping("/{teacherId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> delete(@PathVariable Long professorId) {
-        service.delete(professorId);
+    public ResponseEntity<Void> delete(@PathVariable Long teacherId) {
+        service.delete(teacherId);
         return ResponseEntity.noContent().build();
     }
 }
