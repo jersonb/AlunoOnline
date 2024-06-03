@@ -1,8 +1,8 @@
 package com.alunoonline.api.controllers;
 
-import com.alunoonline.api.models.Aluno;
-import com.alunoonline.api.services.AlunoService;
-import com.alunoonline.api.viewobjects.requests.AlunoDtoRequest;
+import com.alunoonline.api.models.Student;
+import com.alunoonline.api.services.StudentService;
+import com.alunoonline.api.viewobjects.requests.StudentDtoRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -17,13 +17,13 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/aluno")
+@RequestMapping("/students")
 @Tag(name = "Aluno", description = "Gerencie os alunos")
-public class AlunoController {
-    final AlunoService service;
+public class StudentController {
+    final StudentService service;
 
-    public AlunoController(AlunoService alunoService) {
-        this.service = alunoService;
+    public StudentController(StudentService studentService) {
+        this.service = studentService;
     }
 
     @Operation(summary = "Adiciona novo aluno", method = "POST")
@@ -33,18 +33,19 @@ public class AlunoController {
     })
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Void> create(@Valid @RequestBody AlunoDtoRequest request) {
+    public ResponseEntity<Void> create(@Valid @RequestBody StudentDtoRequest request) {
 
-        var aluno = request.toAluno();
-        service.create(aluno);
+        var student = request.toEntity();
+        service.create(student);
 
         var location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(aluno.getId()).toUri();
+                .buildAndExpand(student.getId()).toUri();
 
         return ResponseEntity.created(location).build();
     }
+
 
     @Operation(summary = "Edita um aluno", method = "PUT")
     @ApiResponses(value = {
@@ -52,21 +53,22 @@ public class AlunoController {
             @ApiResponse(responseCode = "404", description = "Aluno não encontrado"),
             @ApiResponse(responseCode = "500", description = "Erro inesperado"),
     })
-    @PutMapping("/{alunoId}")
+    @PutMapping("/{studentId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> update(@PathVariable Long alunoId, @RequestBody AlunoDtoRequest request) {
+    public ResponseEntity<Void> update(@PathVariable Long studentId, @RequestBody StudentDtoRequest request) {
 
-        var aluno = request.toAluno(alunoId);
+        var studentRequest = request.toEntity(studentId);
 
-        var alunoFomDb = service.get(alunoId);
+        var studentEntity = service.get(studentId);
 
-        if (alunoFomDb.isEmpty()) {
+        if (studentEntity.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        service.update(alunoFomDb.get(), aluno);
+        service.update(studentEntity.get(), studentRequest);
 
         return ResponseEntity.noContent().build();
     }
+
 
     @Operation(summary = "Lista alunos", method = "GET")
     @ApiResponses(value = {
@@ -75,10 +77,11 @@ public class AlunoController {
     })
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<Aluno>> get() {
-        var alunos = service.get();
-        return ResponseEntity.ok(alunos);
+    public ResponseEntity<List<Student>> get() {
+        var students = service.get();
+        return ResponseEntity.ok(students);
     }
+
 
     @Operation(summary = "Busca um aluno por id", method = "GET")
     @ApiResponses(value = {
@@ -86,25 +89,27 @@ public class AlunoController {
             @ApiResponse(responseCode = "404", description = "Aluno não encontrado"),
             @ApiResponse(responseCode = "200", description = "Aluno encontrado"),
     })
-    @GetMapping("/{alunoId}")
+    @GetMapping("/{studentId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Optional<Aluno>> get(@PathVariable Long alunoId) {
-        var aluno = service.get(alunoId);
-        if (aluno.isEmpty()) {
+    public ResponseEntity<Optional<Student>> get(@PathVariable Long studentId) {
+        var student = service.get(studentId);
+        if (student.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(aluno);
+        return ResponseEntity.ok(student);
     }
+
+
     @Operation(summary = "Deleta um aluno por id", method = "DELETE")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Aluno deletado"),
             @ApiResponse(responseCode = "500", description = "Erro inesperado"),
             @ApiResponse(responseCode = "404", description = "Aluno não encontrado"),
     })
-    @DeleteMapping("/{alunoId}")
+    @DeleteMapping("/{studentId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> delete(@PathVariable Long alunoId) {
-        service.delete(alunoId);
+    public ResponseEntity<Void> delete(@PathVariable Long studentId) {
+        service.delete(studentId);
         return ResponseEntity.noContent().build();
     }
 }
