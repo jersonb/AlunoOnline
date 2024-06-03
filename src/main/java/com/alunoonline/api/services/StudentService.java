@@ -1,7 +1,7 @@
 package com.alunoonline.api.services;
 
 import com.alunoonline.api.models.Student;
-import com.alunoonline.api.repositories.StudentyRepository;
+import com.alunoonline.api.repositories.StudentRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,9 +10,9 @@ import java.util.Optional;
 @Service
 public class StudentService {
 
-    final StudentyRepository repository;
+    final StudentRepository repository;
 
-    public StudentService(StudentyRepository repository) {
+    public StudentService(StudentRepository repository) {
         this.repository = repository;
     }
 

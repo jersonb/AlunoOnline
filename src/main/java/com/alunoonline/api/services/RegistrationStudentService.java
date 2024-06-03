@@ -3,7 +3,7 @@ package com.alunoonline.api.services;
 import com.alunoonline.api.enums.RegistrationStudentStatusEnum;
 import com.alunoonline.api.models.RegistrationStudent;
 
-import com.alunoonline.api.repositories.MatriculaAlunoRepository;
+import com.alunoonline.api.repositories.RegistrationStudentRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,9 +12,9 @@ import java.util.Optional;
 @Service
 public class RegistrationStudentService {
 
-    final MatriculaAlunoRepository repository;
+    final RegistrationStudentRepository repository;
 
-    public RegistrationStudentService(MatriculaAlunoRepository repository) {
+    public RegistrationStudentService(RegistrationStudentRepository repository) {
         this.repository = repository;
     }
 
@@ -36,12 +36,12 @@ public class RegistrationStudentService {
         matriculaAluno.ifPresent(repository::delete);
     }
 
-    public void update(RegistrationStudent matriculaAlunoOld, RegistrationStudent matriculaAluno) {
-        matriculaAlunoOld.setStudent(matriculaAluno.getStudent());
-        matriculaAlunoOld.setCourse(matriculaAluno.getCourse());
-        matriculaAlunoOld.setNota1(matriculaAluno.getNota1());
-        matriculaAlunoOld.setNota2(matriculaAluno.getNota2());
-        matriculaAlunoOld.setRegistrationStudentStatusEnum(matriculaAluno.getRegistrationStudentStatusEnum());
-        repository.save(matriculaAlunoOld);
+    public void update(RegistrationStudent registrationStudentOld, RegistrationStudent registrationStudent) {
+        registrationStudentOld.setStudent(registrationStudent.getStudent());
+        registrationStudentOld.setCourse(registrationStudent.getCourse());
+        registrationStudentOld.setNota1(registrationStudent.getNota1());
+        registrationStudentOld.setNota2(registrationStudent.getNota2());
+        registrationStudentOld.setRegistrationStudentStatusEnum(registrationStudent.getRegistrationStudentStatusEnum());
+        repository.save(registrationStudentOld);
     }
 }
