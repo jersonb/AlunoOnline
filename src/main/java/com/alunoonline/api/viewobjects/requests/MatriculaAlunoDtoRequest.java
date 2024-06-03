@@ -1,7 +1,7 @@
 package com.alunoonline.api.viewobjects.requests;
 
 import com.alunoonline.api.models.Student;
-import com.alunoonline.api.models.Disciplina;
+import com.alunoonline.api.models.Course;
 import com.alunoonline.api.models.MatriculaAluno;
 import jakarta.validation.constraints.Min;
 import lombok.Data;
@@ -17,7 +17,7 @@ public class MatriculaAlunoDtoRequest {
         var matriculaAluno = new MatriculaAluno();
         var aluno = new Student();
         aluno.setId(alunoId);
-        var disciplina = new Disciplina();
+        var disciplina = new Course();
         disciplina.setId(disciplinaId);
         matriculaAluno.setAluno(aluno);
         matriculaAluno.setDisciplina(disciplina);
@@ -28,7 +28,7 @@ public class MatriculaAlunoDtoRequest {
         var matriculaAluno = new MatriculaAluno();
         var aluno = new Student();
         aluno.setId(alunoId);
-        var disciplina = new Disciplina();
+        var disciplina = new Course();
         disciplina.setId(disciplinaId);
         matriculaAluno.setAluno(aluno);
         matriculaAluno.setDisciplina(disciplina);

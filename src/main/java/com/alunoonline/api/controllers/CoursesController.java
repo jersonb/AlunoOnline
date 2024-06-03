@@ -1,9 +1,9 @@
 package com.alunoonline.api.controllers;
 
-import com.alunoonline.api.models.Disciplina;
-import com.alunoonline.api.services.DisciplinaService;
-import com.alunoonline.api.viewobjects.requests.DisciplinaDtoRequest;
-import com.alunoonline.api.viewobjects.responses.DisciplinaDtoResponse;
+import com.alunoonline.api.models.Course;
+import com.alunoonline.api.services.CourseService;
+import com.alunoonline.api.viewobjects.requests.CourseDtoRequest;
+import com.alunoonline.api.viewobjects.responses.CourseDtoResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -18,14 +18,14 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/disciplina")
+@RequestMapping("/courses")
 @Tag(name = "Disciplina", description = "Gerencie as disciplinas")
-public class DisciplinaController {
+public class CoursesController {
 
-    final DisciplinaService service;
+    final CourseService service;
 
-    public DisciplinaController(DisciplinaService disciplinaService) {
-        this.service = disciplinaService;
+    public CoursesController(CourseService courseService) {
+        this.service = courseService;
     }
 
     @Operation(summary = "Cria ums disciplina", method = "POST")
@@ -35,15 +35,15 @@ public class DisciplinaController {
     })
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Object> create(@Valid @RequestBody DisciplinaDtoRequest request) {
+    public ResponseEntity<Object> create(@Valid @RequestBody CourseDtoRequest request) {
 
-        var disciplina = request.toDisciplina();
-        service.create(disciplina);
+        var course = request.toEntity();
+        service.create(course);
 
         var location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(disciplina.getId()).toUri();
+                .buildAndExpand(course.getId()).toUri();
 
         return ResponseEntity.created(location).build();
     }
@@ -54,17 +54,17 @@ public class DisciplinaController {
             @ApiResponse(responseCode = "404", description = "Disciplina não encontrado"),
             @ApiResponse(responseCode = "500", description = "Erro inesperado"),
     })
-    @PutMapping("/{disciplinaId}")
+    @PutMapping("/{courseId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> update(@PathVariable Long disciplinaId, @RequestBody DisciplinaDtoRequest request) {
+    public ResponseEntity<Void> update(@PathVariable Long courseId, @RequestBody CourseDtoRequest request) {
 
-        var disciplina = request.toDisciplina(disciplinaId);
-        var disciplinaFormDb = service.get(disciplinaId);
+        var course = request.toEntity(courseId);
+        var courseEntity = service.get(courseId);
 
-        if (disciplinaFormDb.isEmpty()) {
+        if (courseEntity.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        service.update(disciplinaFormDb.get(), disciplina);
+        service.update(courseEntity.get(), course);
 
         return ResponseEntity.noContent().build();
     }
@@ -76,9 +76,9 @@ public class DisciplinaController {
     })
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<Disciplina>> get() {
-        var disciplinas = service.get();
-        return ResponseEntity.ok(disciplinas);
+    public ResponseEntity<List<Course>> get() {
+        var course = service.get();
+        return ResponseEntity.ok(course);
     }
 
     @Operation(summary = "Busca uma disciplina por id", method = "GET")
@@ -87,30 +87,32 @@ public class DisciplinaController {
             @ApiResponse(responseCode = "404", description = "Disciplina não encontrado"),
             @ApiResponse(responseCode = "500", description = "Erro inesperado"),
     })
-    @GetMapping("/{disciplinaId}")
+    @GetMapping("/{courseId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Optional<Disciplina>> get(@PathVariable Long disciplinaId) {
+    public ResponseEntity<Optional<Course>> get(@PathVariable Long courseId) {
 
-        var disciplina = service.get(disciplinaId);
-        return ResponseEntity.ok(disciplina);
+        var course = service.get(courseId);
+        return ResponseEntity.ok(course);
     }
-    @GetMapping("/professor/{id}")
-    public  ResponseEntity<DisciplinaDtoResponse> getDisciplina(Long id){
 
-        var disciplinas = service.getDisciplinaByProfessor(id);
-        var disciplinaResponse = new DisciplinaDtoResponse(disciplinas);
-        return ResponseEntity.ok(disciplinaResponse);
+    @GetMapping("/teacher/{id}")
+    public ResponseEntity<CourseDtoResponse> getCourse(@PathVariable Long id) {
+
+        var course = service.getCourseByTeacher(id);
+        var courseResponse = new CourseDtoResponse(course);
+        return ResponseEntity.ok(courseResponse);
     }
+
     @Operation(summary = "Edita uma disciplina", method = "DELETE")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Disciplina ajustado"),
             @ApiResponse(responseCode = "404", description = "Disciplina não encontrado"),
             @ApiResponse(responseCode = "500", description = "Erro inesperado"),
     })
-    @DeleteMapping("/{disciplinaId}")
+    @DeleteMapping("/{courseId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> delete(@PathVariable Long disciplinaId) {
-        service.delete(disciplinaId);
+    public ResponseEntity<Void> delete(@PathVariable Long courseId) {
+        service.delete(courseId);
         return ResponseEntity.noContent().build();
     }
 }

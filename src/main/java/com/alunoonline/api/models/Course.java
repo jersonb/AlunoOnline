@@ -11,15 +11,15 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Data
 @Entity
-public class Disciplina implements Serializable {
+public class Course implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String nome;
+    private String name;
 
     @ManyToOne
-    @JoinColumn(name = "professor_id")
-    private Teacher professor;
+    @JoinColumn(name = "teacher_id")
+    private Teacher teacher;
 
 }
