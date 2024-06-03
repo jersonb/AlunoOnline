@@ -38,7 +38,7 @@ public class DisciplinaService {
     }
 
     public  List<Disciplina> getDisciplinaByProfessor(Long professorId){
-        return  repository.findByProfessor(professorId);
+        return  repository.findByProfessorId(professorId);
     }
 
 }

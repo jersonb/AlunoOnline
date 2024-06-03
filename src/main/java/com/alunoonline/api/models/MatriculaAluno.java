@@ -1,7 +1,6 @@
 package com.alunoonline.api.models;
 
 import com.alunoonline.api.enums.MatriculaAlunoStatusEnum;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,7 +23,7 @@ public class MatriculaAluno implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "aluno_id")
-    private Aluno aluno;
+    private Student aluno;
 
     @ManyToOne
     @JoinColumn(name = "disciplina_id")
