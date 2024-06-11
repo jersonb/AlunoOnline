@@ -1,9 +1,10 @@
 package com.alunoonline.api.controllers;
 
-import com.alunoonline.api.models.Course;
 import com.alunoonline.api.services.CourseService;
-import com.alunoonline.api.viewobjects.requests.CourseDtoRequest;
-import com.alunoonline.api.viewobjects.responses.CourseDtoResponse;
+import com.alunoonline.api.viewobjects.requests.CourseRequest;
+import com.alunoonline.api.viewobjects.responses.CourseListResponse;
+import com.alunoonline.api.viewobjects.responses.CourseResponse;
+import com.alunoonline.api.viewobjects.responses.CourseTeacherResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -14,12 +15,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/courses")
 @Tag(name = "Disciplina", description = "Gerencie as disciplinas")
+@RestControllerAdvice
 public class CoursesController {
 
     final CourseService service;
@@ -29,34 +29,24 @@ public class CoursesController {
     }
 
     @Operation(summary = "Cria ums disciplina", method = "POST")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Disciplina criada"),
-            @ApiResponse(responseCode = "500", description = "Erro inesperado"),
-    })
+    @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Disciplina criada"), @ApiResponse(responseCode = "500", description = "Erro inesperado"),})
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Object> create(@Valid @RequestBody CourseDtoRequest request) {
+    public ResponseEntity<Void> create(@Valid @RequestBody CourseRequest request) {
 
         var course = request.toEntity();
         service.create(course);
 
-        var location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(course.getId()).toUri();
+        var location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(course.getId()).toUri();
 
         return ResponseEntity.created(location).build();
     }
 
     @Operation(summary = "Edita uma disciplina", method = "PUT")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Disciplina ajustado"),
-            @ApiResponse(responseCode = "404", description = "Disciplina não encontrado"),
-            @ApiResponse(responseCode = "500", description = "Erro inesperado"),
-    })
+    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Disciplina ajustado"), @ApiResponse(responseCode = "404", description = "Disciplina não encontrado"), @ApiResponse(responseCode = "500", description = "Erro inesperado"),})
     @PutMapping("/{courseId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> update(@PathVariable Long courseId, @RequestBody CourseDtoRequest request) {
+    public ResponseEntity<Void> update(@PathVariable Long courseId, @Valid @RequestBody CourseRequest request) {
 
         var course = request.toEntity(courseId);
         var courseEntity = service.get(courseId);
@@ -70,45 +60,40 @@ public class CoursesController {
     }
 
     @Operation(summary = "Lista disciplinas", method = "GET")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Lista dos disciplinas"),
-            @ApiResponse(responseCode = "500", description = "Erro inesperado"),
-    })
-    @GetMapping("/all")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Lista dos disciplinas"), @ApiResponse(responseCode = "500", description = "Erro inesperado"),})
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<Course>> get() {
-        var course = service.get();
-        return ResponseEntity.ok(course);
+    public ResponseEntity<CourseListResponse> get() {
+        var courses = service.get();
+
+        var courseListResponse = new CourseListResponse(courses);
+        return ResponseEntity.ok(courseListResponse);
     }
 
     @Operation(summary = "Busca uma disciplina por id", method = "GET")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Disciplina encontrado"),
-            @ApiResponse(responseCode = "404", description = "Disciplina não encontrado"),
-            @ApiResponse(responseCode = "500", description = "Erro inesperado"),
-    })
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Disciplina encontrado"), @ApiResponse(responseCode = "404", description = "Disciplina não encontrado"), @ApiResponse(responseCode = "500", description = "Erro inesperado"),})
     @GetMapping("/{courseId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Optional<Course>> get(@PathVariable Long courseId) {
+    public ResponseEntity<CourseResponse> get(@PathVariable Long courseId) {
 
         var course = service.get(courseId);
-        return ResponseEntity.ok(course);
+        if (course.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        var response = new CourseResponse(course.get());
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/teacher/{id}")
-    public ResponseEntity<CourseDtoResponse> getCourse(@PathVariable Long id) {
+    public ResponseEntity<CourseTeacherResponse> getCourse(@PathVariable Long id) {
 
         var course = service.getCourseByTeacher(id);
-        var courseResponse = new CourseDtoResponse(course);
-        return ResponseEntity.ok(courseResponse);
+        var courseTeacherResponse = new CourseTeacherResponse(course);
+        return ResponseEntity.ok(courseTeacherResponse);
     }
 
     @Operation(summary = "Edita uma disciplina", method = "DELETE")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Disciplina ajustado"),
-            @ApiResponse(responseCode = "404", description = "Disciplina não encontrado"),
-            @ApiResponse(responseCode = "500", description = "Erro inesperado"),
-    })
+    @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Disciplina ajustado"), @ApiResponse(responseCode = "404", description = "Disciplina não encontrado"), @ApiResponse(responseCode = "500", description = "Erro inesperado"),})
     @DeleteMapping("/{courseId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> delete(@PathVariable Long courseId) {

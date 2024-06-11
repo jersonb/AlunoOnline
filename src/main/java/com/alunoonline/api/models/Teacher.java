@@ -20,6 +20,6 @@ public class Teacher implements Serializable {
     private String name;
     private String email;
     @OneToMany(mappedBy = "teacher")
-    private Collection<Course> disciplina;
+    private Collection<Course> courses;
 
 }

@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 @Data
-public class StudentDtoRequest {
+public class StudentRequest {
     @NotBlank(message = "nome precisa ser preenchido")
     private String name;
 
@@ -16,10 +16,7 @@ public class StudentDtoRequest {
     private String email;
 
     public Student toEntity() {
-        var student = new Student();
-        student.setName(this.name);
-        student.setEmail(this.email);
-        return student;
+        return this.toEntity(0L);
     }
 
     public Student toEntity(Long id) {

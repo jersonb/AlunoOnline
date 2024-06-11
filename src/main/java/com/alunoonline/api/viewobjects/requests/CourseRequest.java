@@ -5,14 +5,12 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class CourseDtoRequest {
+public class CourseRequest {
     @NotBlank(message = "nome precisa ser preenchido")
     String name;
 
     public Course toEntity() {
-        var course = new Course();
-        course.setName(this.name);
-        return course;
+        return this.toEntity(0L);
     }
 
     public Course toEntity(Long id) {

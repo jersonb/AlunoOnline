@@ -39,8 +39,8 @@ public class RegistrationStudentService {
     public void update(RegistrationStudent registrationStudentOld, RegistrationStudent registrationStudent) {
         registrationStudentOld.setStudent(registrationStudent.getStudent());
         registrationStudentOld.setCourse(registrationStudent.getCourse());
-        registrationStudentOld.setNota1(registrationStudent.getNota1());
-        registrationStudentOld.setNota2(registrationStudent.getNota2());
+        registrationStudentOld.setGrade1(registrationStudent.getGrade1());
+        registrationStudentOld.setGrade2(registrationStudent.getGrade2());
         registrationStudentOld.setRegistrationStudentStatusEnum(registrationStudent.getRegistrationStudentStatusEnum());
         repository.save(registrationStudentOld);
     }

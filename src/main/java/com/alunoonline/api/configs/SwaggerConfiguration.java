@@ -18,5 +18,4 @@ public class SwaggerConfiguration implements ApplicationListener<ApplicationPrep
         environment.getPropertySources().addFirst(new PropertiesPropertySource("programmatically", props));
     }
 
-
 }

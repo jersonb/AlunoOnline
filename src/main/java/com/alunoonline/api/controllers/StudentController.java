@@ -1,8 +1,9 @@
 package com.alunoonline.api.controllers;
 
-import com.alunoonline.api.models.Student;
 import com.alunoonline.api.services.StudentService;
-import com.alunoonline.api.viewobjects.requests.StudentDtoRequest;
+import com.alunoonline.api.viewobjects.requests.StudentRequest;
+import com.alunoonline.api.viewobjects.responses.StudentListResponse;
+import com.alunoonline.api.viewobjects.responses.StudentResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -13,8 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/students")
@@ -27,35 +26,25 @@ public class StudentController {
     }
 
     @Operation(summary = "Adiciona novo aluno", method = "POST")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Aluno adicionado"),
-            @ApiResponse(responseCode = "500", description = "Erro inesperado"),
-    })
+    @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Aluno adicionado"), @ApiResponse(responseCode = "500", description = "Erro inesperado"),})
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Void> create(@Valid @RequestBody StudentDtoRequest request) {
+    public ResponseEntity<Void> create(@Valid @RequestBody StudentRequest request) {
 
         var student = request.toEntity();
         service.create(student);
 
-        var location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(student.getId()).toUri();
+        var location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(student.getId()).toUri();
 
         return ResponseEntity.created(location).build();
     }
 
 
     @Operation(summary = "Edita um aluno", method = "PUT")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Aluno ajustado"),
-            @ApiResponse(responseCode = "404", description = "Aluno não encontrado"),
-            @ApiResponse(responseCode = "500", description = "Erro inesperado"),
-    })
+    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Aluno ajustado"), @ApiResponse(responseCode = "404", description = "Aluno não encontrado"), @ApiResponse(responseCode = "500", description = "Erro inesperado"),})
     @PutMapping("/{studentId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> update(@PathVariable Long studentId, @RequestBody StudentDtoRequest request) {
+    public ResponseEntity<Void> update(@PathVariable Long studentId, @Valid @RequestBody StudentRequest request) {
 
         var studentRequest = request.toEntity(studentId);
 
@@ -71,41 +60,32 @@ public class StudentController {
 
 
     @Operation(summary = "Lista alunos", method = "GET")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Lista de alunos"),
-            @ApiResponse(responseCode = "500", description = "Erro inesperado"),
-    })
-    @GetMapping("/all")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Lista de alunos"), @ApiResponse(responseCode = "500", description = "Erro inesperado"),})
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<Student>> get() {
+    public ResponseEntity<StudentListResponse> get() {
         var students = service.get();
-        return ResponseEntity.ok(students);
+        var response = new StudentListResponse(students);
+        return ResponseEntity.ok(response);
     }
 
 
     @Operation(summary = "Busca um aluno por id", method = "GET")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "500", description = "Erro inesperado"),
-            @ApiResponse(responseCode = "404", description = "Aluno não encontrado"),
-            @ApiResponse(responseCode = "200", description = "Aluno encontrado"),
-    })
+    @ApiResponses(value = {@ApiResponse(responseCode = "500", description = "Erro inesperado"), @ApiResponse(responseCode = "404", description = "Aluno não encontrado"), @ApiResponse(responseCode = "200", description = "Aluno encontrado"),})
     @GetMapping("/{studentId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Optional<Student>> get(@PathVariable Long studentId) {
+    public ResponseEntity<StudentResponse> get(@PathVariable Long studentId) {
         var student = service.get(studentId);
         if (student.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(student);
+        var response = new StudentResponse(student.get());
+        return ResponseEntity.ok(response);
     }
 
 
     @Operation(summary = "Deleta um aluno por id", method = "DELETE")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Aluno deletado"),
-            @ApiResponse(responseCode = "500", description = "Erro inesperado"),
-            @ApiResponse(responseCode = "404", description = "Aluno não encontrado"),
-    })
+    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Aluno deletado"), @ApiResponse(responseCode = "500", description = "Erro inesperado"), @ApiResponse(responseCode = "404", description = "Aluno não encontrado"),})
     @DeleteMapping("/{studentId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> delete(@PathVariable Long studentId) {

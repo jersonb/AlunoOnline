@@ -18,8 +18,8 @@ public class RegistrationStudent implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Double nota1;
-    private Double nota2;
+    private Double grade1;
+    private Double grade2;
 
     @ManyToOne
     @JoinColumn(name = "student_id")
