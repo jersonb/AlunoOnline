@@ -18,22 +18,22 @@ public class RegistrationStudentService {
         this.repository = repository;
     }
 
-    public void create(RegistrationStudent matriculaAluno) {
-        matriculaAluno.setRegistrationStudentStatusEnum(RegistrationStudentStatusEnum.REGISTERED);
-        repository.save(matriculaAluno);
+    public void create(RegistrationStudent registrationStudent) {
+        registrationStudent.setRegistrationStudentStatusEnum(RegistrationStudentStatusEnum.REGISTERED);
+        repository.save(registrationStudent);
     }
 
-    public Optional<RegistrationStudent> get(Long matriculaAlunoId) {
-        return repository.findById(matriculaAlunoId);
+    public Optional<RegistrationStudent> get(Long registrationStudentId) {
+        return repository.findById(registrationStudentId);
     }
 
     public List<RegistrationStudent> get() {
         return repository.findAll();
     }
 
-    public void delete(Long matriculaAlunoId) {
-        var matriculaAluno = get(matriculaAlunoId);
-        matriculaAluno.ifPresent(repository::delete);
+    public void delete(Long registrationStudentId) {
+        var registrationStudent = get(registrationStudentId);
+        registrationStudent.ifPresent(repository::delete);
     }
 
     public void update(RegistrationStudent registrationStudentOld, RegistrationStudent registrationStudent) {

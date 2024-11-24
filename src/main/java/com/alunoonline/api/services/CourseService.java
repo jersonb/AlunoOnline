@@ -32,8 +32,8 @@ public class CourseService {
         course.ifPresent(repository::delete);
     }
 
-    public void update(Course courseOld, Course disciplina) {
-        courseOld.setName(disciplina.getName());
+    public void update(Course courseOld, Course course) {
+        courseOld.setName(course.getName());
         repository.save(courseOld);
     }
 
