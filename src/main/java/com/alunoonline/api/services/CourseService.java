@@ -37,8 +37,4 @@ public class CourseService {
         repository.save(courseOld);
     }
 
-    public List<Course> getCourseByTeacher(Long teacherId) {
-        return repository.findByTeacherId(teacherId);
-    }
-
 }

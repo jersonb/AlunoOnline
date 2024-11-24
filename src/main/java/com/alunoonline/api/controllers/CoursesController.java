@@ -71,7 +71,11 @@ public class CoursesController {
     }
 
     @Operation(summary = "Busca uma disciplina por id", method = "GET")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Disciplina encontrado"), @ApiResponse(responseCode = "404", description = "Disciplina não encontrado"), @ApiResponse(responseCode = "500", description = "Erro inesperado"),})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Disciplina encontrado"),
+            @ApiResponse(responseCode = "404", description = "Disciplina não encontrado"),
+            @ApiResponse(responseCode = "500", description = "Erro inesperado")
+    })
     @GetMapping("/{courseId}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<CourseResponse> get(@PathVariable Long courseId) {
@@ -82,14 +86,6 @@ public class CoursesController {
         }
         var response = new CourseResponse(course.get());
         return ResponseEntity.ok(response);
-    }
-
-    @GetMapping("/teacher/{id}")
-    public ResponseEntity<CourseTeacherResponse> getCourse(@PathVariable Long id) {
-
-        var course = service.getCourseByTeacher(id);
-        var courseTeacherResponse = new CourseTeacherResponse(course);
-        return ResponseEntity.ok(courseTeacherResponse);
     }
 
     @Operation(summary = "Edita uma disciplina", method = "DELETE")
