@@ -1,19 +1,16 @@
-version: '3.8'
 
 services:
-
-  postgresql:
-    image: postgres
-    container_name: aluno-online-postgres
-    restart: always
+  mysql:
+    container_name: mysql
+    image: mysql:8.0
     environment:
-      POSTGRES_PASSWORD: alunoonline
-      POSTGRES_USER: alunoonline
-      POSTGRES_DB: alunoonline
+      MYSQL_DATABASE: alunoonline
+      MYSQL_PASSWORD: alunoonline
+      MYSQL_ROOT_PASSWORD: alunoonline
+      MYSQL_USER: alunoonline
     volumes:
-      - alunoonline:/var/lib/postgresql/data
+      - alunoonline:/var/lib/mysql
     ports:
-      - 5433:5432
-
+      - 3307:3306
 volumes:
   alunoonline:
