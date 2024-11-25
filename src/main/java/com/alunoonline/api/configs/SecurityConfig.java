@@ -40,6 +40,8 @@ public class SecurityConfig {
             "/v3/api-docs",
             "/v3/api-docs/swagger-config",
             "/swagger-ui/swagger-initializer.js",
+            "/swagger-ui/index.html",
+            "/swagger-ui/**",
             "/v2/api-docs/**",
             "/swagger-resources",
             "/",
@@ -64,7 +66,7 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(); // Password encoding
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
