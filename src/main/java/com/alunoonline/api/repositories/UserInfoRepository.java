@@ -6,10 +6,10 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;
 
-public interface UserRepository extends JpaRepository<UserInfo, Long> {
+public interface UserInfoRepository extends JpaRepository<UserInfo, Long> {
 
     Optional<UserInfo> findByEmail(String email);
 
-    @Query("select count(u) > 0 from User u where u.email = :email and u.password = :password")
-    boolean findByLoginAndPassword(String email, String password);
+    @Query("select count(u) = 1  from UserInfo u where u.email = :email")
+    boolean existsByEmail(String email);
 }

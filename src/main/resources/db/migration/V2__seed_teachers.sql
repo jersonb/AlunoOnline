@@ -1,3 +1,23 @@
-INSERT INTO alunoonline.Teacher (email,name) VALUES
-	 ('joao@email.com','Joao Pedro'),
-	 ('mc@email.com','maria clara');
+INSERT INTO alunoonline.Teacher (email, name) VALUES
+    ('joao@email.com', 'Joao Pedro'),
+    ('mc@email.com', 'Maria Clara'),
+    ('ana.silva@email.com', 'Ana Silva'),
+    ('carlos.souza@email.com', 'Carlos Souza'),
+    ('fernanda.lima@email.com', 'Fernanda Lima'),
+    ('lucas.oliveira@email.com', 'Lucas Oliveira'),
+    ('mariana.rocha@email.com', 'Mariana Rocha'),
+    ('roberto.almeida@email.com', 'Roberto Almeida'),
+    ('isabela.santos@email.com', 'Isabela Santos'),
+    ('ricardo.martins@email.com', 'Ricardo Martins'),
+    ('carolina.medeiros@email.com', 'Carolina Medeiros'),
+    ('paulo.dias@email.com', 'Paulo Dias'),
+    ('amanda.pereira@email.com', 'Amanda Pereira'),
+    ('tiago.gomes@email.com', 'Tiago Gomes'),
+    ('juliana.freitas@email.com', 'Juliana Freitas'),
+    ('rafael.silveira@email.com', 'Rafael Silveira'),
+    ('priscila.costa@email.com', 'Priscila Costa'),
+    ('marcelo.ribeiro@email.com', 'Marcelo Ribeiro'),
+    ('larissa.siqueira@email.com', 'Larissa Siqueira'),
+    ('eduardo.ferreira@email.com', 'Eduardo Ferreira'),
+    ('renata.alves@email.com', 'Renata Alves'),
+    ('fabio.moraes@email.com', 'Fabio Moraes');

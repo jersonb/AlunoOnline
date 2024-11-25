@@ -1,6 +1,5 @@
-package com.alunoonline.api.configs;
+package com.alunoonline.api.models;
 
-import com.alunoonline.api.models.UserInfo;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,7 +11,7 @@ import java.util.stream.Stream;
 
 public class UserInfoDetails implements UserDetails {
 
-    private final String username; // Changed from 'name' to 'username' for clarity
+    private final String username;
     private final String password;
     private final List<GrantedAuthority> authorities;
 
@@ -41,21 +40,21 @@ public class UserInfoDetails implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return true; // Implement your logic if you need this
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true; // Implement your logic if you need this
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true; // Implement your logic if you need this
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return true; // Implement your logic if you need this
+        return true;
     }
 }

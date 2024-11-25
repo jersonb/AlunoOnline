@@ -3,16 +3,20 @@ package com.alunoonline.api.models;
 import jakarta.persistence.*;
 import lombok.*;
 
-@AllArgsConstructor
-@NoArgsConstructor
+@Entity
 @Getter
 @Setter
-@Entity
-@Table(indexes = {@Index(name = "idx_email", columnList = "email", unique = true)})
-public class User  {
+@AllArgsConstructor
+@NoArgsConstructor
+public class UserInfo {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String password;
+    private String name;
+    @Column(unique=true)
     private String email;
+    private String password;
+    private String roles;
+
 }

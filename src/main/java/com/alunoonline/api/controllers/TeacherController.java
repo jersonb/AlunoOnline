@@ -14,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-
 @RestController
 @RequestMapping("/teachers")
 @Tag(name = "Professor", description = "Gerencie os professores")

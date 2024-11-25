@@ -1,6 +1,8 @@
 package com.alunoonline.api.controllers;
 
-import com.alunoonline.api.services.UserService;
+import com.alunoonline.api.configs.JwtService;
+import com.alunoonline.api.services.UserInfoService;
+import com.alunoonline.api.viewobjects.requests.AuthRequest;
 import com.alunoonline.api.viewobjects.requests.CreateUserRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -9,6 +11,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -18,10 +23,14 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 @RestControllerAdvice
 public class UserController {
 
-    final UserService service;
+    final UserInfoService service;
+    final JwtService jwtService;
+    final AuthenticationManager authenticationManager;
 
-    public UserController(UserService service) {
+    public UserController(UserInfoService service, JwtService jwtService, AuthenticationManager authenticationManager) {
         this.service = service;
+        this.jwtService = jwtService;
+        this.authenticationManager = authenticationManager;
     }
 
 
@@ -32,7 +41,7 @@ public class UserController {
     public ResponseEntity<String> create(@Valid @RequestBody CreateUserRequest request) {
 
         var user = request.toEntity();
-        var created = service.create(user);
+        var created = service.addUser(user);
         if (created) {
             var location = ServletUriComponentsBuilder.fromCurrentRequest().path("/auth").buildAndExpand().toUri();
             return ResponseEntity.created(location).build();
@@ -46,15 +55,15 @@ public class UserController {
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Usuário Logado"), @ApiResponse(responseCode = "500", description = "Erro inesperado"),})
     @PostMapping("/auth")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<String> auth(@Valid @RequestBody CreateUserRequest request) {
-
-        var user = request.toEntity();
-        var login = service.login(user);
-        if (login == null) {
-            return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
+    public ResponseEntity<String> auth(@Valid @RequestBody AuthRequest request) {
+        var userAuthentication = new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword());
+        var authentication = authenticationManager.authenticate(userAuthentication);
+        if (authentication.isAuthenticated()) {
+            var token = jwtService.generateToken(request.getUsername());
+            return ResponseEntity.ok(token);
         }
+        throw new UsernameNotFoundException("Invalid user request!");
 
-        return ResponseEntity.ok().body(login);
 
     }
 }
